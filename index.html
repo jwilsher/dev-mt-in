@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="devMtIn">
 
 <head>
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,700,600' rel='stylesheet' type='text/css'>
@@ -9,40 +9,43 @@
 	<title>DevMtin</title>
 </head>
 
-<body>
+<body ng-controller="homeCtrl">
 	<div class="l-header">
-		<h1>Your Name</h1>
+		<h1> {{ myProfile.name || 'Your Name' }} </h1>
 	</div>
   
   <div class="wrapper">  
     <div>
       <h2>Profile</h2>
-      <button class="l-btn l-btn-main">Editing :</button>
+      <button ng-click="editing = !editing" class="l-btn l-btn-main">Editing : {{editing}}</button>
     </div>
 
     <div>      
 
-      <input id="name" type="text" placeholder="Your Name">
+      <input ng-model="myProfile.name" ng-disabled="!editing" id="name" type="text" placeholder="Your Name">
       <br />
 
-      <input id="likes" type="text" placeholder="Likes">
+      <input ng-model="myProfile.likes" ng-disabled="!editing" id="likes" type="text" placeholder="Likes">
       <br />
 
-      <input id="favColor" type="text" placeholder="Favorite Color">
+      <input ng-model="myProfile.color" ng-disabled="!editing" id="favColor" type="text" placeholder="Favorite Color">
       <br />
-      <button class="l-btn l-btn-success">Save</button>
-      <button class="l-btn l-btn-danger">Delete</button>
+      <button ng-click= "saveProfile(myProfile)" class="l-btn l-btn-success">Save</button>
+      <button ng-click = "deleteProfile(myProfile)" class="l-btn l-btn-danger">Delete</button>
     </div>
   </div>
 
   <div class="l-container">
+    
     <h2>Friends</h2>
 
     <button class="l-btn l-btn-main">Go</button>
-    <input type="text" placeholder="Find Friends">    
-    <div class="friendList">
+    <input ng-model= "findFriend.name"type="text" placeholder="Find Friends">  
+        <select ng-model="sortReverse" ng-options="option.value as option.display for option in sortOptions"></select>
+    <div class="friendList" ng-repeat="friend in myProfile.friends | filter : findFriend.name | orderBy : 'name' : sortReverse"">
+        
       <span class="closeBtn"></span>
-        My Friends
+        {{ friend.name }}
       <br />
       <div class="secondConnection friendList">
         My Second Connections
@@ -64,7 +67,9 @@
 			</div>
 		</div>
 	</div>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+  <script src="app.js"></script>
+  <script src="homeCtrl.js"></script>
+  <script src="profileService.js"></script>"
 </body>
-
 </html>
