@@ -1,5 +1,5 @@
 angular.module('devMtIn')
-.controller('homeCtrl', function($scope, profileService) {
+.controller('homeCtrl', function($scope, profileService, friendService) {
     //$scope.myProfile = profileService.checkForProfile();
     
     $scope.checkForProfile = function() {
@@ -48,5 +48,20 @@ angular.module('devMtIn')
         
         //profileService.deleteProfile(profile);
         //$scope.myProfile = profileService.checkForProfile();
+    }
+    
+    $scope.findFriends = function(query) {
+        friendService.findFriends($scope.myProfile._id, query)
+        .then(function(response){
+            $scope.potentialFriends = response.data;
+            console.log($scope.potentialFriends);
+        })
+    }
+    
+    $scope.addFriend = function(friendId) {
+        friendService.addFriend($scope.myProfile._id, friendId)
+        .then(function(){
+            $scope.checkForProfile;
+        })
     }
 });
